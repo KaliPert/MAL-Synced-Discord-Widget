@@ -40,6 +40,13 @@ This can help you import the Discord widget configuration without building every
 | Upper widget | `username`, `joindate`, `dayswatched` |
 | Grid | `watching`, `plantowatch`, `completed`, `dropped`, `onhold`, `totalwatched` |
 
+## Showcase
+
+| Preview | Description |
+| --- | --- |
+| ![Mini widget preview](assets/mal-widget-compact-preview.png) | Compact top banner for the widget header |
+| ![Full widget preview](assets/mal-widget-full-preview.png) | Full widget layout with profile stats |
+
 ## Notes
 
 | Topic | Details |
