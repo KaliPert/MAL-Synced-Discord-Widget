@@ -1,0 +1,17 @@
+{
+  "name": "mal-discord-widget-sync",
+  "version": "1.0.0",
+  "description": "Sync public MyAnimeList statistics to a Discord application widget.",
+  "main": "sync.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node sync.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "axios": "^1.18.1",
+    "dotenv": "^17.4.2"
+  }
+}
