@@ -15,8 +15,8 @@ Sync public MyAnimeList profile stats to a Discord application profile widget.
 | Step | Command | Notes |
 | --- | --- | --- |
 | Install dependencies | `npm install` | Installs the project packages |
-| Create environment file | `.env` | Add the required values listed below before running the script |
-| Start the sync | `npm start` | Runs the sync loop |
+| Create environment file | `.env` | Add the values listed below before running the script |
+| Start the sync | `node sync.js` | Runs the sync loop directly |
 
 ## Easy Discord Developer Portal Setup
 
@@ -29,9 +29,20 @@ This can help you import the Discord widget configuration without building every
 | Variable | Required | Description |
 | --- | --- | --- |
 | `MAL_USERNAME` | Yes | Public MyAnimeList username |
+| `MAL_CLIENT_ID` | No | Included in the original template for compatibility with the Discord widget setup |
 | `DISCORD_BOT_TOKEN` | Yes | Discord bot token used for the API request |
 | `APPLICATION_ID` | Yes | Discord application ID |
 | `DISCORD_USER_ID` | Yes | Target Discord user ID; non-digits are removed before use |
+
+Example `.env` file:
+
+```env
+MAL_USERNAME=your_mal_username
+MAL_CLIENT_ID=your_mal_client_id
+DISCORD_BOT_TOKEN=your_discord_bot_token
+APPLICATION_ID=your_discord_application_id
+DISCORD_USER_ID=your_discord_user_id
+```
 
 ## Widget Layout
 
