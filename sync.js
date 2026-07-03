@@ -26,12 +26,15 @@ function validateConfig() {
   }
 }
 
+const USER_AGENT = 'mal-discord-widget-sync/1.0.0 (https://github.com/7Games/mal-discord-widget)';
+
 function formatJoinDate(joinedAt) {
   if (!joinedAt) {
     return 'Joined: Unknown';
   }
 
   return `Joined: ${new Date(joinedAt).toLocaleDateString('en-US', {
+    timeZone: 'UTC',
     month: 'short',
     day: 'numeric',
     year: 'numeric'
@@ -39,7 +42,8 @@ function formatJoinDate(joinedAt) {
 }
 
 function formatDaysWatched(daysWatched) {
-  const value = typeof daysWatched === 'number' ? daysWatched : 0;
+  const parsed = Number.parseFloat(daysWatched);
+  const value = Number.isNaN(parsed) ? 0 : parsed;
   return `Days watched: ${value.toFixed(1)}`;
 }
 
@@ -68,11 +72,23 @@ function buildWidgetPayload(stats) {
 async function fetchMALProfileData() {
   console.log(`Fetching public MAL stats for ${config.malUsername}...`);
 
+  const headers = {
+    'User-Agent': USER_AGENT
+  };
+
   try {
-    const [statsResponse, profileResponse] = await Promise.all([
-      axios.get(`${JIKAN_API_BASE_URL}/users/${encodeURIComponent(config.malUsername)}/statistics`),
-      axios.get(`${JIKAN_API_BASE_URL}/users/${encodeURIComponent(config.malUsername)}`)
-    ]);
+    const statsResponse = await axios.get(
+      `${JIKAN_API_BASE_URL}/users/${encodeURIComponent(config.malUsername)}/statistics`,
+      { headers }
+    );
+
+    // Wait 1 second to avoid Jikan rate limit (3 requests per second limit)
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    const profileResponse = await axios.get(
+      `${JIKAN_API_BASE_URL}/users/${encodeURIComponent(config.malUsername)}`,
+      { headers }
+    );
 
     const animeStats = statsResponse.data?.data?.anime ?? {};
     const userData = profileResponse.data?.data ?? {};
@@ -103,7 +119,8 @@ async function pushDataToDiscordWidget(stats) {
       {
         headers: {
           Authorization: `Bot ${config.discordBotToken}`,
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'User-Agent': USER_AGENT
         }
       }
     );
